@@ -39,10 +39,19 @@ public class DestinationsController : ControllerBase
     if (thisPlace == null)
       return NotFound();
 
-    
-
     return thisPlace;
   }
+
+  // [HttpGet("{id}/average")]
+  // public async Task<ActionResult<Destination>> GetAverage(int id)
+  // {
+  //   Destination thisPlace = await _db.Destinations
+  //                                           .Include(d => d.Reviews)
+  //                                           .FirstOrDefaultAsync(d => d.DestinationId == id);
+  //   thisPlace.AverageRating = thisPlace.Reviews.Select(r => r.Rating).Average();
+
+  //   return thisPlace;
+  // }
 
   // POST: api/destinations
   [HttpPost]

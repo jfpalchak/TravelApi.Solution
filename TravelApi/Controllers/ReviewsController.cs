@@ -50,6 +50,15 @@ public class ReviewsController : ControllerBase
   public async Task<ActionResult<Review>> Post([FromBody] Review review)
   {
     _db.Reviews.Add(review);
+
+    // Update the reviewed Destination's Average Rating.
+    Destination thisPlace = await _db.Destinations
+                                            .Include(d => d.Reviews)
+                                            .FirstOrDefaultAsync(d => d.DestinationId == review.DestinationId);
+    thisPlace.AverageRating = thisPlace.Reviews.Select(r => r.Rating).Average();
+
+    _db.Destinations.Update(thisPlace);
+    
     await _db.SaveChangesAsync();
     return CreatedAtAction(nameof(GetReview), new { id = review.ReviewId }, review);
   }
